@@ -17,6 +17,7 @@
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="btn-primary">Start free</a>
             <a href="{{ url_for('login') }}" class="btn-ghost btn-ghost-light">Sign in</a>
+            <a href="#" class="btn-link" id="openVideoModal">See how it works</a>
         </div>
     </div>
     <div class="hero-visual">
@@ -81,4 +82,50 @@
     </div>
 </section>
 
+<div class="modal-overlay" id="videoModal">
+    <div class="modal-content">
+        <button class="modal-close" id="closeModal">&times;</button>
+        <div class="video-container">
+            <iframe id="videoFrame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+    var modal = document.getElementById('videoModal');
+    var openBtn = document.getElementById('openVideoModal');
+    var closeBtn = document.getElementById('closeModal');
+    var iframe = document.getElementById('videoFrame');
+    var videoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1';
+
+    openBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        iframe.src = videoUrl;
+        modal.classList.add('open');
+    });
+
+    function closeModal() {
+        modal.classList.remove('open');
+        iframe.src = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('open')) {
+            closeModal();
+        }
+    });
+})();
+</script>
 {% endblock %}
